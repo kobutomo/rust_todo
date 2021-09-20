@@ -27,8 +27,6 @@ fn main() {
     // DBの接続を確立
     let conn = establish_connection();
 
-    // customerテーブルの各情報を取得
-    // SQLで「SELECT * FROM customer;」をやっているのと同じ
     let result = todos.filter(name.eq("test")).first::<models::Todo>(&conn);
 
     match result {
@@ -37,14 +35,20 @@ fn main() {
             let new_todo = NewTodo {
                 name: "test".to_string(),
                 detail: Option::None,
-                date_from: Option::Some(chrono::NaiveDateTime::parse_from_str(
-                    "2021-09-20 5:00:00",
-                    "%Y-%m-%d %H:%M:%S",
-                ).expect("failed to parse")),
-                date_to: Option::Some(chrono::NaiveDateTime::parse_from_str(
-                    "2021-09-20 6:00:00",
-                    "%Y-%m-%d %H:%M:%S",
-                ).expect("failed to parse")),
+                date_from: Option::Some(
+                    chrono::NaiveDateTime::parse_from_str(
+                        "2021-09-20 5:00:00",
+                        "%Y-%m-%d %H:%M:%S",
+                    )
+                    .expect("failed to parse"),
+                ),
+                date_to: Option::Some(
+                    chrono::NaiveDateTime::parse_from_str(
+                        "2021-09-20 6:00:00",
+                        "%Y-%m-%d %H:%M:%S",
+                    )
+                    .expect("failed to parse"),
+                ),
             };
 
             let database_record = diesel::insert_into(schema::todos::table)
